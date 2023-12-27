@@ -13,9 +13,7 @@ C++ implementation of Modified Wigner Distribution Function (Form II).
 
 ## Usage
 
-See `./src/main.cpp`
-
-## Run
+An example can be found in `./src/main.cpp`. Run it with the following commands.
 
 ```bash
 mkdir build
