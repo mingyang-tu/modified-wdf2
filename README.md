@@ -22,7 +22,7 @@ mkdir build
 cd build
 cmake ..
 cmake --build . --config Release
-./pwdf
+./mwdf
 ```
 
 ## Example
