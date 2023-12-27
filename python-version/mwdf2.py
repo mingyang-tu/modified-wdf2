@@ -23,7 +23,7 @@ def mwdf2(x, t, f, dt, df, window):
     x_pad[:T] = x
     X = np.fft.fft(x_pad, norm="ortho")
     X = np.concatenate((X[-Qmax:], X[: Qmax + 1]))
-    X = np.pad(X, (Q, Q), "wrap")
+    X = np.pad(X, (Q, Q))
     X_conj = np.conj(X)
 
     n = np.arange(0, T)
@@ -36,7 +36,7 @@ def mwdf2(x, t, f, dt, df, window):
         end = m + Q * 2 + Qmax + 1
         auto_correlation[: end - start] = X[start:end] * np.flip(X_conj[start:end]) * w
         idft = np.fft.ifft(auto_correlation) * N
-        output[m - f1, :] = 2 * dt * np.exp(-1j * 2 * np.pi * n * Q / N) * idft[n]
+        output[m - f1, :] = 2 * df * np.exp(-1j * 2 * np.pi * n * Q / N) * idft[n]
     return output
 
 

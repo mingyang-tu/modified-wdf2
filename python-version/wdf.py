@@ -29,7 +29,7 @@ def wdf(x, t, f, dt, df):
         end = m + Q + Qmax + 1
         auto_correlation[: end - start] = X[start:end] * np.flip(X_conj[start:end])
         idft = np.fft.ifft(auto_correlation) * N
-        output[m - f1, :] = 2 * dt * np.exp(-1j * 2 * np.pi * n * Q / N) * idft[n]
+        output[m - f1, :] = 2 * df * np.exp(-1j * 2 * np.pi * n * Q / N) * idft[n]
     return output
 
 
