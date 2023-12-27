@@ -9,24 +9,29 @@ def mwdf2(x, t, f, dt, df, window):
     assert len(window) % 2 == 1
     T = len(t)
     F = len(f)
-    N = int(1 / dt / df / 2)
+    N = int(1 / dt / df / 2)  # IFFT length
 
     B = len(window) // 2
     Q = B // 2
 
     f1 = int(f[0] / df)
     f2 = f1 + F - 1
-    Qmax = N // 2 - 1
+    Qmax = N // 2 - 1  # valid frequency range
     assert -Qmax <= f1 <= f2 <= Qmax
 
+    # padding
     x_pad = np.zeros(N * 2, dtype=np.complex128)
     x_pad[:T] = x
+    # FFT, normalize
     X = np.fft.fft(x_pad, norm="ortho")
+    # fftshift and get valid range
     X = np.concatenate((X[-Qmax:], X[: Qmax + 1]))
     X = np.pad(X, (Q, Q))
+    # conjugate
     X_conj = np.conj(X)
 
     n = np.arange(0, T)
+    # prepare window
     w = window[B - Q * 2 : B + Q * 2 + 1 : 2]
 
     output = np.zeros((F, T), dtype=np.complex128)
@@ -36,7 +41,7 @@ def mwdf2(x, t, f, dt, df, window):
         end = m + Q * 2 + Qmax + 1
         auto_correlation[: end - start] = X[start:end] * np.flip(X_conj[start:end]) * w
         idft = np.fft.ifft(auto_correlation) * N
-        output[m - f1, :] = 2 * df * np.exp(-1j * 2 * np.pi * n * Q / N) * idft[n]
+        output[m - f1, :] = 2 * df * np.exp(-1j * 2 * np.pi * n * Q / N) * idft[:T]
     return output
 
 

@@ -58,13 +58,10 @@ vector<complex<double>> gaussian_window(double sigma, double dt) {
     int Q = static_cast<int>(1.9143 / std::sqrt(sigma) / dt);
     vector<double> x(2 * Q + 1);
     vector<complex<double>> result(2 * Q + 1);
-
     for (int i = -Q; i <= Q; i++)
         x[i + Q] = i * dt;
-
     for (int i = 0; i < x.size(); i++)
         result[i] = sqrt(sqrt(sigma)) * exp(-sigma * M_PI * x[i] * x[i]);
-
     return result;
 }
 
